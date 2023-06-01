@@ -9,7 +9,11 @@
   "scripts": {
     "dev": "nodemon ./index.ts",
     "serve": "ts-node ./index.ts",
-    "build": "rm -rf dist && tsc"
+    "build": "rm -rf dist && tsc && ts-node build/index.ts",
+    "commit": "git add . && git-cz",
+    "update-version": "ts-node build/version.ts",
+    "commit-version": "npm run update-version && npm run commit",
+    "release": "rm -rf dist && tsc && ts-node build/index.ts"
   },
   "keywords": [
     "cli",
