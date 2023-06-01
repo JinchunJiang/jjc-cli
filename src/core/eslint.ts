@@ -1,0 +1,47 @@
+import fs from 'fs-extra';
+import { getEnv, getPackageJson } from '../utils/env';
+import { getPath } from '../utils/path';
+import { writeInPkg } from '../utils/tool';
+import { prettierrcInit } from '../template/prettierrc';
+import { eslintrcFn } from '../template/eslintrc';
+
+const baseDep = [
+  'eslint@^7.25.0',
+  'prettier@^2.7.1',
+  'esint-friendly-formatter@^4.0.1',
+  'eslint-pugin-prettier@^4.0.0',
+  'eslint-pllugin-html@^6.2.0',
+  'eslint-config-prettier@^8.5.0',
+];
+export const eslintInit = async () => {
+  let devDependencies: string[] = baseDep;
+  if (getEnv('isVue2')) {
+    devDependencies = [...baseDep, 'eslint-plugin-vue@^6.2.2'];
+  }
+  if (getEnv('isVue3')) {
+    devDependencies = [
+      ...baseDep,
+      'eslint-plugin-vue@^9.2.0',
+      '@typescript-eslint@parser@^5.30.7',
+    ];
+  }
+  if (getEnv('isReact')) {
+    devDependencies = [
+      ...baseDep,
+      'eslint-plugin-react@^7.30.1',
+      'eslint-plugin-jsx-a11y@^6.6.1',
+      '@typescript-eslint/parser@^5.30.7',
+      '@typescript-eslint/eslint-plugin@5.30.7',
+    ];
+  }
+  // writeInPkg 只是把依赖写入到package中
+  await writeInPkg(devDependencies, 'devDependencies');
+  fs.outputFileSync(getPath('./.eslintrc.js'), eslintrcFn());
+  fs.outputFileSync(getPath('./.prettierrc'), prettierrcInit);
+
+  let pkg = await getPackageJson();
+  if (pkg['eslintConfig']) {
+    delete pkg.eslintConfig;
+  }
+  fs.writeJsonSync(getPath('package.json'), pkg, { spaces: 2 });
+};

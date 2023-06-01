@@ -1,0 +1,38 @@
+{
+  "name": "jjc-cli",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "bin": {
+    "jc": "dist/index.js"
+  },
+  "scripts": {
+    "dev": "nodemon ./index.ts",
+    "serve": "ts-node ./index.ts",
+    "build": "rm -rf dist && tsc"
+  },
+  "keywords": [
+    "cli",
+    "jjc"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JinchunJiang/jjc-cli.git"
+  },
+  "author": "jjc",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.2.5",
+    "nodemon": "^2.0.22",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4",
+    "inquirer": "^8.0.0"
+  },
+  "dependencies": {
+    "cac": "^6.7.14",
+    "chalk": "4.1.2",
+    "cross-spawn": "^7.0.3",
+    "fs-extra": "^11.1.1",
+    "inquirer": "8.2.4"
+  }
+}
